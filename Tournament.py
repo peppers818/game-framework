@@ -7,13 +7,14 @@ import Message
 import Observable
 import Display
 
+
 class Tournament(Observable.Observable):
     # set up a list of players when tournament is initialized
     def __init__(self):
         Observable.Observable.__init__(self)
         self.playerList = []
         self.game = None
-
+        self.display = None
 
     def attach_display(self, display):
         self.display = display
@@ -26,13 +27,12 @@ class Tournament(Observable.Observable):
     # run the tournament
     def run(self):
         self.begin_tournament()
-        while (True):
+        while True:
             match = self.create_next_match()
-            if match == None:
+            if match is None:
                 break
             self.play_match(match)
         self.end_tournament()
-
 
     # get a reference to the next game to be played
     def create_next_match(self):
@@ -48,7 +48,6 @@ class Tournament(Observable.Observable):
     def set_game(self, game):
         self.game = game
 
-
     # Computes the result of a round based on the moves made by the players
     def get_result(self, moves):
         return self.game.get_result(moves)
@@ -57,10 +56,15 @@ class Tournament(Observable.Observable):
     def play_match(self, match):
         players = match[0]
         self.start_match(players)
-        result = self.play_rounds(match)
+        result = self.play_rounds(match)  # play_rounds should return a value, but doesn't... TODO??
         self.end_match(players, result)
 
-    # plays each indvidual game in the match
+    # plays each individual game in the match
+    """
+        This function should return a result, but when it does return result,
+        it stops the match in the preceding play_match function.
+        This is likely a bug, but I haven't figured out a solution to this.
+    """
     def play_rounds(self, match):
         players = match[0]
         rounds = match[1]
@@ -71,7 +75,6 @@ class Tournament(Observable.Observable):
                 moves.append(p.play())
             result = self.get_result(moves)
             self.end_round(players, moves, result)
-
 
     # notifies players tournament has begun
     def begin_tournament(self):

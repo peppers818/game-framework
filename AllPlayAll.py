@@ -1,14 +1,15 @@
 __author__ = "Paul Council & William Ezekiel"
-__date__ = "November 24 2014"
+__date__ = "November 30 2014"
 __version__ = "1.0.1"
 
 #imports
 import Tournament
 
-""" AllPlayAll Tournament Type, every player is in a match with every other player """
+
 class AllPlayAll(Tournament.Tournament):
-    
-    def __init__(self,rounds = 5):
+    """ AllPlayAll Tournament Type, every player is in a match with every other player"""
+
+    def __init__(self, rounds=5):
         """ Initialize AllPlayAll
         :param rounds the number of rounds per match, 100 by default
         """
@@ -23,9 +24,9 @@ class AllPlayAll(Tournament.Tournament):
         self.playerList = self.get_players()
         if self.q >= len(self.playerList):   # Gone through all possible matchups.
             return None
-        match = ((self.playerList[self.p],self.playerList[self.q]), self.rounds)
-        self.q = self.q+1
+        match = ((self.playerList[self.p], self.playerList[self.q]), self.rounds)
+        self.q += 1
         if self.q >= len(self.playerList):    # if index out of bounds
-            self.p = self.p+1
+            self.p += 1
             self.q = self.p+1
         return match

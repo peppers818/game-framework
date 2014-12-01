@@ -5,50 +5,50 @@ __author__ = 'Tara Crittenden'
 import Observer
 from Message import *
 
+
 class Display(Observer.Observer):
 
     #Determine which method to display
     def notify(self, msg):
-        if msg.msgtype == 1:
+        if msg.is_tournament_start_message():
             #start of a tournament
             self.display_start_tournament(msg)
-        elif msg.msgtype == 2:
+        elif msg.is_tournament_end_message():
             #end of a tournament
             self.display_end_tournament(msg)
-        elif msg.msgtype == 3:
+        elif msg.is_match_start_message():
             #start of a match
             self.display_start_match(msg)
-        elif msg.msgtype == 4:
+        elif msg.is_match_end_message():
             #end of a match
             self.display_end_match(msg)
-        elif msg.msgtype == 5:
+        elif msg.is_round_start_message():
             #start of a round
             self.display_start_round(msg)
-        elif msg.msgtype == 6:
+        elif msg.is_round_end_message():
             #end of a round
             self.display_end_round(msg)
         else:
             print('Unknown message type')
 
-    #Provides easy readiablity
+    #Provides easy readability
     def indent_cushion(self):
         for i in range(4):
             print('+')
 
-
     #Helper method for deconstructing the info portion of a end round message
     #Returns the char representation of the move
-    def get_move(self, mademove):
+    def get_move(self, made_move):
         """
-        :param mademove: move that was made in int form
+        :param made_move: move that was made in int form
         :return: move that was made in char form
 
         """
-        if mademove == 0:
+        if made_move == 0:
             return 'Rock'
-        elif mademove == 1:
+        elif made_move == 1:
             return 'Paper'
-        elif mademove == 2:
+        elif made_move == 2:
             return 'Scissors'
 
     #Display the start of a tournament
@@ -84,7 +84,7 @@ class Display(Observer.Observer):
         self.indent_cushion()
         self.indent_cushion()
 
-    #Display the start of a match        
+    #Display the start of a match
     def display_start_match(self, msg):
         """
         :param msg: message to be displayed
@@ -98,14 +98,14 @@ class Display(Observer.Observer):
         for player in players:
             print(player.get_name())
 
-    #Display the end of a match       
+    #Display the end of a match
     def display_end_match(self, msg):
         """
         :param msg: message to be displayed
 
         """
         self.indent_cushion()
-        print ("Match end!")
+        print("Match end!")
 
         # TODO fix
         """
@@ -127,15 +127,15 @@ class Display(Observer.Observer):
         #
         """
 
-    #Display the start of a round       
+    #Display the start of a round
     def display_start_round(self, msg):
         """
         :param msg: message to be displayed
 
         """
         pass
-    
-    #Display the end of a round    
+
+    #Display the end of a round
     def display_end_round(self, msg):
         """
         :param msg: message to be displayed
@@ -144,9 +144,9 @@ class Display(Observer.Observer):
         print('\nRound Results: ')
         m = Message.get_info(msg)
         #r is the winner of the round
-        if m[1] == (0,0):
+        if m[1] == (0, 0):
             r = 'Tied'
-        elif m[1] == (1,0):
+        elif m[1] == (1, 0):
             #player 1 won
             r = 'Player 1 '
         #elif m[1] == (0,1):
@@ -159,5 +159,3 @@ class Display(Observer.Observer):
         a = self.get_move(moves[0])
         b = self.get_move(moves[1])
         print('   Moves made: Player 1: ' + a + ' Player 2: ' + b)
-
-    
